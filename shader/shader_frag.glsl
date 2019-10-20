@@ -1,11 +1,12 @@
 uniform sampler1D texture;
 uniform float center_x;
 uniform float center_y;
+uniform float scale;
 
 void main() {
     vec2 mandelbrot_point;
-    center_x = gl_TexCoord[0].x - center_x;
-    center_y = gl_TexCoord[0].y - center_y;
+    center_x = gl_TexCoord[0].x * scale - center_x;
+    center_y = gl_TexCoord[0].y * scale - center_y;
 
     mandelbrot_point.x = center_x;
     mandelbrot_point.y = center_y;

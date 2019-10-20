@@ -1,15 +1,17 @@
 from OpenGL.GL import *
 
+from display import DISPLAY
+
 
 class Canvas:
     @staticmethod
     def paint():
         glBegin(GL_QUADS)
 
-        Canvas._set_vertex(-1, -1)
-        Canvas._set_vertex(-1, 1)
-        Canvas._set_vertex(1, 1)
-        Canvas._set_vertex(1, -1)
+        Canvas._set_vertex(-DISPLAY.width / 2, -DISPLAY.height / 2)
+        Canvas._set_vertex(-DISPLAY.width / 2, DISPLAY.height / 2)
+        Canvas._set_vertex(DISPLAY.width / 2, DISPLAY.height / 2)
+        Canvas._set_vertex(DISPLAY.width / 2, -DISPLAY.height / 2)
 
         glEnd()
 

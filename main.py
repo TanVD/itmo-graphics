@@ -2,6 +2,7 @@ from OpenGL.GL import *
 from OpenGL.GLUT import *
 
 from canvas import Canvas
+from controls import Controls
 from display import *
 from program import Program
 from shader.shader import Shader
@@ -14,8 +15,9 @@ def display():
 
     Program.use()
 
-    Program.forward_float("center_x", center_x)
-    Program.forward_float("center_y", center_y)
+    Program.forward_float("center_x", DISPLAY.center_x)
+    Program.forward_float("center_y", DISPLAY.center_y)
+    Program.forward_float("scale", DISPLAY.scale)
 
     Canvas.paint()
 
@@ -28,7 +30,7 @@ def main():
 
     glutInit(sys.argv)
     glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE)
-    glutInitWindowSize(width, height)
+    glutInitWindowSize(DISPLAY.width, DISPLAY.height)
     glutCreateWindow("HW1, Mandelbrot, Tankov Vladislav")
 
     Texture.create_1d()
@@ -37,6 +39,9 @@ def main():
     Program.link()
 
     glutDisplayFunc(display)
+    glutReshapeFunc(DISPLAY.reshape)
+    glutMouseFunc(Controls.mouse)
+    glutMotionFunc(Controls.motion)
 
     glutMainLoop()
 
