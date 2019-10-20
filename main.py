@@ -1,6 +1,7 @@
 from OpenGL.GL import *
 from OpenGL.GLUT import *
 
+from slider import Slider
 from canvas import Canvas
 from controls import Controls
 from display import *
@@ -18,8 +19,13 @@ def display():
     Program.forward_float("center_x", DISPLAY.center_x)
     Program.forward_float("center_y", DISPLAY.center_y)
     Program.forward_float("scale", DISPLAY.scale)
+    Program.forward_int("iterations", Slider.iterations)
 
     Canvas.paint()
+
+    Program.disable()
+
+    Slider.paint()
 
     glutSwapBuffers()
 

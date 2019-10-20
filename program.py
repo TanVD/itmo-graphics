@@ -23,6 +23,10 @@ class Program:
         glUseProgram(Program.get())
 
     @staticmethod
+    def disable():
+        glUseProgram(0)
+
+    @staticmethod
     def _forward_location(name):
         return glGetUniformLocation(Program.get(), name)
 
