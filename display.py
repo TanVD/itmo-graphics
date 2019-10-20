@@ -1,7 +1,7 @@
 from OpenGL.GL import *
 
 
-class DISPLAY:
+class Display:
     mouse_force = 0.01
 
     width = 800
@@ -15,14 +15,14 @@ class DISPLAY:
 
     @staticmethod
     def from_display_to_app(x, y):
-        new_y = (-y + DISPLAY.height / 2) / (DISPLAY.height / 2)
-        new_x = (x - DISPLAY.width / 2) / (DISPLAY.width / 2)
+        new_y = (-y + Display.height / 2) / (Display.height / 2)
+        new_x = (x - Display.width / 2) / (Display.width / 2)
         return new_x, new_y
 
     @staticmethod
     def reshape(width, height):
-        DISPLAY.width = width
-        DISPLAY.height = height
+        Display.width = width
+        Display.height = height
 
         glViewport(0, 0, width, height)
 

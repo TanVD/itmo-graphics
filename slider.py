@@ -1,15 +1,17 @@
 from OpenGL.GL import *
 
-from display import DISPLAY
+from display import Display
 
 
 class Slider:
     iterations = 100
     total_num_iterations = 1000
 
+    _size = 0.02
+
     @staticmethod
     def length():
-        return 0.5
+        return 1
 
     @staticmethod
     def height():
@@ -24,13 +26,19 @@ class Slider:
         Slider._paint_slider()
 
     @staticmethod
-    def update_slider_by_x(to_x):
-        percent = ((to_x / DISPLAY.width) - 0.25) / 0.5
-        Slider.iterations = int(percent * Slider.total_num_iterations)
+    def update_slider_by_x(to_x, to_y):
+        x, y = Display.from_display_to_app(to_x, to_y)
+        if x < -0.5:
+            Slider.iterations = 1
+        elif x > 0.5:
+            Slider.iterations = Slider.total_num_iterations
+        else:
+            percent = x + 0.5
+            Slider.iterations = int(percent * Slider.total_num_iterations)
 
     @staticmethod
     def is_in_slider(x, y):
-        x, y = DISPLAY.from_display_to_app(x, y)
+        x, y = Display.from_display_to_app(x, y)
         top_left, top_right, bottom_right, bottom_left = Slider._slider_position()
         x_left_lim, y_top_lim = top_left
         x_right_lim, y_bot_lim = bottom_right
@@ -41,10 +49,10 @@ class Slider:
         percent = Slider.iterations / Slider.total_num_iterations
         width_pos = (Slider.length() * percent) - (Slider.length() / 2)
 
-        top_left = (width_pos - 0.01, Slider.height() + 0.01)
-        top_right = (width_pos + 0.01, Slider.height() + 0.01)
-        bottom_right = (width_pos + 0.01, Slider.height() - 0.01)
-        bottom_left = (width_pos - 0.01, Slider.height() - 0.01)
+        top_left = (width_pos - Slider._size, Slider.height() + Slider._size)
+        top_right = (width_pos + Slider._size, Slider.height() + Slider._size)
+        bottom_right = (width_pos + Slider._size, Slider.height() - Slider._size)
+        bottom_left = (width_pos - Slider._size, Slider.height() - Slider._size)
 
         return top_left, top_right, bottom_right, bottom_left
 

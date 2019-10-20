@@ -1,5 +1,6 @@
 from OpenGL.GL import *
 
+
 class Canvas:
     @staticmethod
     def paint():

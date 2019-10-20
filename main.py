@@ -16,9 +16,9 @@ def display():
 
     Program.use()
 
-    Program.forward_float("center_x", DISPLAY.center_x)
-    Program.forward_float("center_y", DISPLAY.center_y)
-    Program.forward_float("scale", DISPLAY.scale)
+    Program.forward_float("center_x", Display.center_x)
+    Program.forward_float("center_y", Display.center_y)
+    Program.forward_float("scale", Display.scale)
     Program.forward_int("iterations", Slider.iterations)
 
     Canvas.paint()
@@ -36,7 +36,7 @@ def main():
 
     glutInit(sys.argv)
     glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE)
-    glutInitWindowSize(DISPLAY.width, DISPLAY.height)
+    glutInitWindowSize(Display.width, Display.height)
     glutCreateWindow("HW1, Mandelbrot, Tankov Vladislav")
 
     Texture.create_1d()
@@ -45,7 +45,7 @@ def main():
     Program.link()
 
     glutDisplayFunc(display)
-    glutReshapeFunc(DISPLAY.reshape)
+    glutReshapeFunc(Display.reshape)
     glutMouseFunc(Controls.mouse)
     glutMotionFunc(Controls.motion)
     # For some reason wheel event is not working on my computer
