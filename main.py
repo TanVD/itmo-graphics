@@ -42,6 +42,8 @@ def main():
     glutReshapeFunc(DISPLAY.reshape)
     glutMouseFunc(Controls.mouse)
     glutMotionFunc(Controls.motion)
+    # For some reason wheel event is not working on my computer
+    glutKeyboardUpFunc(Controls.key_up)
 
     glutMainLoop()
 

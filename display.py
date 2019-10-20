@@ -2,6 +2,8 @@ from OpenGL.GL import *
 
 
 class DISPLAY:
+    mouse_force = 0.01
+
     width = 800
     height = 800
 
@@ -9,6 +11,7 @@ class DISPLAY:
     center_y = 0
 
     scale = 4.0
+    scale_divider = 0.5
 
     @staticmethod
     def reshape(width, height):
