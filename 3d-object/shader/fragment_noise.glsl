@@ -14,5 +14,6 @@ void main() {
         discard;
     }
     float light_force = 0.5 * dot(normal, eye_position);
+    gl_FragColor = vec4(0, 0, 0, 1);
     gl_FragColor += red * light_force;
 }
