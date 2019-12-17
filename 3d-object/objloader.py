@@ -57,10 +57,14 @@ class ObjLoader:
                     vert_index = face[i] - 1
                     self.prepared_vertices.append(self.vertices[vert_index])
 
-            for i in [0, 1, 2]:
-                tex_index = texcoords[i] - 1
-                self.prepared_tex_coords.append(self.texcoords[tex_index])
-            if len(texcoords) > 3:
-                for i in [0, 2, 3]:
+            if self.texcoords:
+                for i in [0, 1, 2]:
                     tex_index = texcoords[i] - 1
                     self.prepared_tex_coords.append(self.texcoords[tex_index])
+                if len(texcoords) > 3:
+                    for i in [0, 2, 3]:
+                        tex_index = texcoords[i] - 1
+                        self.prepared_tex_coords.append(self.texcoords[tex_index])
+
+        if not self.texcoords:
+            self.prepared_tex_coords = self.prepared_vertices
