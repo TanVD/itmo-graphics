@@ -20,7 +20,7 @@ class Texture:
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR)
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR)
 
-        id = Program.forward_2d_texture(1, "texCoord", texture_coords)
+        id = Program.forward_2d_texture(1, "texture_coord", texture_coords)
 
         texture = glGenTextures(id)
         glBindTexture(GL_TEXTURE_2D, texture)
