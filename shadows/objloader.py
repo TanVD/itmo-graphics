@@ -1,4 +1,14 @@
 # Based ob PyGame tutorial for Obj loading
+import numpy as np
+
+
+def normalize(v):
+    norm = np.linalg.norm(v)
+    if norm:
+        v = np.divide(v, norm)
+    return v
+
+
 class ObjLoader:
     def __init__(self, filename, swapyz=False):
         """Loads a Wavefront OBJ file. """
@@ -8,6 +18,7 @@ class ObjLoader:
         self.faces = []
 
         self.prepared_vertices = []
+        self.prepared_normals = []
         self.prepared_tex_coords = []
 
         material = None
@@ -69,6 +80,17 @@ class ObjLoader:
         if not self.texcoords:
             self.prepared_tex_coords = self.prepared_vertices
 
-    def add_plane(self, list):
-        self.prepared_tex_coords.extend(list)
-        self.prepared_vertices.extend(list)
+        for i in range(0, len(self.prepared_vertices), 3):
+            mat = [self.prepared_vertices[i + j] for j in range(3)]
+            ab = np.subtract(mat[1], mat[0])
+            ac = np.subtract(mat[2], mat[0])
+            self.prepared_normals.extend([list(normalize(np.cross(ab, ac)))] * 3)
+
+    def add_plane(self, plane):
+        self.prepared_tex_coords.extend(plane)
+        self.prepared_vertices.extend(plane)
+        for i in range(0, len(plane), 3):
+            mat = [plane[i + j].copy() for j in range(3)]
+            ab = np.subtract(mat[1], mat[0])
+            ac = np.subtract(mat[2], mat[0])
+            self.prepared_normals.extend([list(normalize(np.cross(ab, ac)))] * 3)

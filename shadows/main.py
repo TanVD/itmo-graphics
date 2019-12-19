@@ -1,3 +1,5 @@
+import numpy as np
+
 from camera import Camera
 from controls import Controls
 from display import *
@@ -12,17 +14,15 @@ def main():
     # Will use GLUT https://compgraphics.info/OpenGL/template_glut.php,
     # but on Python https://wiki.python.org/moin/PyOpenGL
 
-    obj_file = ObjLoader("models/box/box.obj")
-    obj_file.add_plane(plane(4))
-
-    glutInitContextVersion(3, 0)
+    obj_file = ObjLoader("models/bunny.obj")
+    obj_file.add_plane(plane(0.3, 0.1))
 
     glutInit(sys.argv)
     glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH)
     glutInitWindowSize(Display.width, Display.height)
     glutCreateWindow("HW3, Shadows, Tankov Vladislav")
 
-    Program.prepare(obj_file.prepared_vertices, obj_file.normals)
+    Program.prepare(obj_file.prepared_vertices, obj_file.prepared_normals)
 
     Program.create()
     Program.attach_shader(Shader.load("shader/vertex.glsl", GL_VERTEX_SHADER))

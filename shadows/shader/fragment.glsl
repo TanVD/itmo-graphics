@@ -1,21 +1,15 @@
-#version 330 core
+#version 130
 
-layout (location = 0) out vec4 frag_color;
+out vec4 frag_color;
 
 in vec3 frag_pos;
 in vec3 normal;
-in vec2 tex_coords;
 in vec4 light_frag_pos;
 
-uniform sampler2D texture_diffuse;
-uniform sampler2D texture_specular;
-uniform sampler2D depth_map;
-
-
 //Based on https://learnopengl.com/Lighting/Basic-Lighting
-vec3 ambient_coef = vec3(0.2, 0.2, 0.2);
-vec3 diffuse_coef = vec3(0.6, 0.6, 0.6);
-vec3 specular_coef = vec3(1, 1, 1);
+vec3 ambient_coef = vec3(0.02, 0.02, 0.02);
+vec3 diffuse_coef = vec3(0.4, 0.4, 0.4);
+vec3 specular_coef = vec3(0.5, 0.5, 0.5);
 
 vec3 color = vec3(0.2, 1, 0.5);
 

@@ -7,7 +7,7 @@ from program import Program
 
 
 class Lightning:
-    _scale = 0.1
+    _scale = 1
 
     _light_angle = 0
 
@@ -17,7 +17,7 @@ class Lightning:
 
     @staticmethod
     def update_angle():
-        # Lightning._light_angle = (time.time() % 360) * 5
+        Lightning._light_angle = (time.time() % 360) * 5
         Lightning.update_gl()
 
     @staticmethod
