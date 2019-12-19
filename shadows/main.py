@@ -5,6 +5,7 @@ from lightning import Lightning
 from objloader import ObjLoader
 from program import Program
 from shader.shader import Shader
+from util import plane
 
 
 def main():
@@ -12,6 +13,7 @@ def main():
     # but on Python https://wiki.python.org/moin/PyOpenGL
 
     obj_file = ObjLoader("models/box/box.obj")
+    obj_file.add_plane(plane(4))
 
     glutInit(sys.argv)
     glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH)

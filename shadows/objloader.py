@@ -68,3 +68,7 @@ class ObjLoader:
 
         if not self.texcoords:
             self.prepared_tex_coords = self.prepared_vertices
+
+    def add_plane(self, list):
+        self.prepared_tex_coords.extend(list)
+        self.prepared_vertices.extend(list)
