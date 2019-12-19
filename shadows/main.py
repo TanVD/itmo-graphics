@@ -15,6 +15,8 @@ def main():
     obj_file = ObjLoader("models/box/box.obj")
     obj_file.add_plane(plane(4))
 
+    glutInitContextVersion(3, 0)
+
     glutInit(sys.argv)
     glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH)
     glutInitWindowSize(Display.width, Display.height)
