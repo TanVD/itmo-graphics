@@ -17,7 +17,7 @@ class Lightning:
 
     @staticmethod
     def update_angle():
-        Lightning._light_angle = (time.time() % 360) * 5
+        # Lightning._light_angle = (time.time() % 360) * 5
         Lightning.update_gl()
 
     @staticmethod

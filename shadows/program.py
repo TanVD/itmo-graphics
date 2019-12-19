@@ -8,7 +8,10 @@ class Program:
     @staticmethod
     def prepare(vertices):
         glEnable(GL_DEPTH_TEST)
-        glEnableClientState(GL_TEXTURE_COORD_ARRAY)
+        glBindFramebuffer(GL_FRAMEBUFFER, 0)
+
+        glClearColor(20 / 255, 20 / 255, 20 / 255, 1)
+
         glEnableClientState(GL_VERTEX_ARRAY)
         glVertexPointer(3, GL_FLOAT, 0, vertices)
 

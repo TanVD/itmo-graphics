@@ -20,8 +20,6 @@ class Display:
 
     @staticmethod
     def reshape(width, height):
-        glMatrixMode(GL_PROJECTION)
-        glLoadIdentity()
         glViewport(0, 0, width, height)
         gluPerspective(100, width / height, 0.1, 50)
         gluLookAt(*(10, 10, 10), *(0, 0, 0), *(0, 1, 0))

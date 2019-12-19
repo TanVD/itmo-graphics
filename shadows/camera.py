@@ -27,7 +27,7 @@ class Camera:
         ))
 
         Program.forward_mat4("projection",
-                             glm.perspective(math.radians(Camera._field_of_view), Display.width / Display.height, 0.5, 50))
+                             glm.perspective(math.radians(Camera._field_of_view), Display.width / Display.height, 0.1, 100))
         Program.forward_mat4("view",
                              glm.lookAt(camera_front, glm.vec3(), Camera._camera_up))
         Program.forward_vec3("camera_position", camera_front)
