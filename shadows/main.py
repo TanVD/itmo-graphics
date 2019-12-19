@@ -20,7 +20,7 @@ def main():
     glutInitWindowSize(Display.width, Display.height)
     glutCreateWindow("HW3, Shadows, Tankov Vladislav")
 
-    Program.prepare(obj_file.prepared_vertices)
+    Program.prepare(obj_file.prepared_vertices, obj_file.normals)
 
     Program.create()
     Program.attach_shader(Shader.load("shader/vertex.glsl", GL_VERTEX_SHADER))

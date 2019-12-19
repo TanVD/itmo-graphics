@@ -6,7 +6,7 @@ class Program:
     _instance = None
 
     @staticmethod
-    def prepare(vertices):
+    def prepare(vertices, normals):
         glEnable(GL_DEPTH_TEST)
         glBindFramebuffer(GL_FRAMEBUFFER, 0)
 
@@ -14,6 +14,8 @@ class Program:
 
         glEnableClientState(GL_VERTEX_ARRAY)
         glVertexPointer(3, GL_FLOAT, 0, vertices)
+        glEnableClientState(GL_NORMAL_ARRAY)
+        glNormalPointer(GL_FLOAT, 0, normals)
 
     @staticmethod
     def create():
