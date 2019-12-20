@@ -4,6 +4,7 @@ import time
 import glm
 
 from program import Program
+from shadow.shadow_program import ShadowProgram
 
 
 class Lightning:
@@ -22,9 +23,19 @@ class Lightning:
 
     @staticmethod
     def update_gl():
-        Program.forward_mat4("model",
-                             glm.scale(glm.mat4(), glm.vec3(Lightning._scale, Lightning._scale, Lightning._scale)))
-        Program.forward_vec3("light_position", glm.vec3(*Lightning._light_pos()))
-        Program.forward_mat4("light_projection", glm.ortho(-1.0, 1.0, -1.0, 1.0, 0.5, 6.0))
-        Program.forward_mat4("light_view",
-                             glm.lookAt(glm.vec3(*Lightning._light_pos()), glm.vec3(0.0, 0.0, 0.0), glm.vec3(0, 1, 0)))
+        model = glm.scale(glm.mat4(), glm.vec3(Lightning._scale, Lightning._scale, Lightning._scale))
+        light_position = glm.vec3(*Lightning._light_pos())
+        light_projection = glm.ortho(-1.0, 1.0, -1.0, 1.0, 0.5, 6.0)
+        light_view = glm.lookAt(glm.vec3(*Lightning._light_pos()), glm.vec3(0.0, 0.0, 0.0), glm.vec3(0, 1, 0))
+
+        Program.forward_mat4("model", model)
+        ShadowProgram.forward_mat4("model", model)
+
+        Program.forward_vec3("light_position", light_position)
+        ShadowProgram.forward_vec3("light_position", light_position)
+
+        Program.forward_mat4("light_projection", light_projection)
+        ShadowProgram.forward_mat4("light_projection", light_projection)
+
+        Program.forward_mat4("light_view", light_view)
+        ShadowProgram.forward_mat4("light_view", light_view)

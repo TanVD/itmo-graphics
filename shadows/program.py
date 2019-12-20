@@ -1,15 +1,24 @@
 import glm
 from OpenGL.GL import *
 
+from shadow.shadow_program import ShadowProgram
+
 
 class Program:
     _instance = None
 
     @staticmethod
-    def prepare(vertices, normals):
-        glEnable(GL_DEPTH_TEST)
-        glBindFramebuffer(GL_FRAMEBUFFER, 0)
+    def prepare():
+        return
 
+    @staticmethod
+    def create():
+        assert Program._instance is None
+        Program._instance = glCreateProgram()
+
+    @staticmethod
+    def after_create(vertices, normals):
+        glEnable(GL_DEPTH_TEST)
         glClearColor(20 / 255, 20 / 255, 20 / 255, 1)
 
         glEnableClientState(GL_VERTEX_ARRAY)
@@ -17,10 +26,6 @@ class Program:
         glEnableClientState(GL_NORMAL_ARRAY)
         glNormalPointer(GL_FLOAT, 0, normals)
 
-    @staticmethod
-    def create():
-        assert Program._instance is None
-        Program._instance = glCreateProgram()
 
     @staticmethod
     def get():
@@ -33,6 +38,7 @@ class Program:
 
     @staticmethod
     def use():
+        glUseProgram(0)
         glUseProgram(Program.get())
 
     @staticmethod

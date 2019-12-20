@@ -15,21 +15,28 @@ def main():
     # but on Python https://wiki.python.org/moin/PyOpenGL
 
     obj_file = ObjLoader("models/bunny.obj")
-    obj_file.add_plane(plane(0.3, 0.1))
+    obj_file.add_plane(plane(0.2, 0.1))
 
     glutInit(sys.argv)
     glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH)
     glutInitWindowSize(Display.width, Display.height)
     glutCreateWindow("HW3, Shadows, Tankov Vladislav")
 
-    Program.prepare(obj_file.prepared_vertices, obj_file.prepared_normals)
+    ShadowProgram.prepare()
+    ShadowProgram.create()
+    ShadowProgram.attach_shader(Shader.load("shader/shadow_vertex.glsl", GL_VERTEX_SHADER))
+    ShadowProgram.attach_shader(Shader.load("shader/shadow_fragment.glsl", GL_FRAGMENT_SHADER))
+    ShadowProgram.link()
+    ShadowProgram.use()
+    ShadowProgram.after_create(obj_file.prepared_vertices, obj_file.prepared_normals)
 
+    Program.prepare()
     Program.create()
-    Program.attach_shader(Shader.load("shader/vertex.glsl", GL_VERTEX_SHADER))
-    Program.attach_shader(Shader.load("shader/fragment.glsl", GL_FRAGMENT_SHADER))
+    Program.attach_shader(Shader.load("shader/main_vertex.glsl", GL_VERTEX_SHADER))
+    Program.attach_shader(Shader.load("shader/main_fragment.glsl", GL_FRAGMENT_SHADER))
     Program.link()
-
     Program.use()
+    Program.after_create(obj_file.prepared_vertices, obj_file.prepared_normals)
 
     Camera.update_gl()
     Lightning.update_gl()
