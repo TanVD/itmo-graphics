@@ -17,7 +17,7 @@ def main():
 
     glutInit(sys.argv)
     glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH)
-    glutInitWindowSize(Display.width, Display.height)
+    glutInitWindowSize(Config.width, Config.height)
     glutCreateWindow("HW2, Object, Tankov Vladislav")
 
     Program.prepare(obj_file.prepared_vertices, obj_file.prepared_normals)
@@ -43,6 +43,11 @@ def main():
 
     glutMouseFunc(Controls.mouse)
     glutMotionFunc(Controls.motion)
+
+    glutCreateMenu(Controls.menu)
+    glutAddMenuEntry("Disable Dissolve", 0)
+    glutAddMenuEntry("Enable Dissolve", 1)
+    glutAttachMenu(GLUT_RIGHT_BUTTON)
 
     glutMainLoop()
 

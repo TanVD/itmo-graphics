@@ -1,4 +1,6 @@
 class Config:
-    model = "bunny"
+    model = "flash"
+    scale = 0.05
 
-    scale = 1
+    width = 800
+    height = 800

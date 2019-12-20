@@ -7,9 +7,6 @@ from lightning import Lightning
 
 
 class Display:
-    width = 800
-    height = 800
-
     @staticmethod
     def display(vertices):
         def display():
@@ -28,5 +25,5 @@ class Display:
     @staticmethod
     def idle():
         Lightning.update_gl()
-        DissolveAnimation.animate_dissolve()
+        DissolveAnimation.update_gl()
         glutPostRedisplay()

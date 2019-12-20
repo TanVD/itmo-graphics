@@ -9,6 +9,15 @@ class Controls:
     _glut_scroll_down = 4
 
     @staticmethod
+    def menu(id):
+        if id == 0:
+            DissolveAnimation.disable()
+        elif id == 1:
+            DissolveAnimation.enable()
+        return 0
+
+
+    @staticmethod
     def mouse(btn, state, x, y):
         if state != GLUT_DOWN:
             Camera.disable_rotation()
