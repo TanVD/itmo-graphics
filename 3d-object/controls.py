@@ -1,9 +1,10 @@
+from camera import Camera
 from display import *
 
 
 class Controls:
-    _mouse_force = 0.95
-    _mouse_back_force = 1 / _mouse_force
+    _mouse_force = 1
+    _mouse_back_force = -1
     _glut_scroll_up = 3
     _glut_scroll_down = 4
 
@@ -21,9 +22,9 @@ class Controls:
         Camera.disable_rotation()
 
         if btn == Controls._glut_scroll_up:
-            glScale(Controls._mouse_back_force, Controls._mouse_back_force, Controls._mouse_back_force)
+            Camera.scroll(Controls._mouse_back_force)
         elif btn == Controls._glut_scroll_down:
-            glScale(Controls._mouse_force, Controls._mouse_force, Controls._mouse_force)
+            Camera.scroll(Controls._mouse_force)
 
         glutPostRedisplay()
 

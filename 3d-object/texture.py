@@ -27,7 +27,7 @@ class Texture:
 
         # use noise library as pyglet does https://pypi.org/project/noise/
         noise = [
-            pnoise2(1 / Texture.size * i, 1 / Texture.size * j)
+            pnoise2(1 / Texture.size * i, 1 / Texture.size * j, octaves=5, lacunarity=2, repeatx=1, repeaty=1)
             for i in range(Texture.size)
             for j in range(Texture.size)
         ]
