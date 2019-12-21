@@ -14,9 +14,11 @@ class Display:
     @staticmethod
     def display(vertices):
         def display():
+            glClearColor(20 / 255, 20 / 255, 20 / 255, 1)
+
             ShadowProgram.use()
-            glViewport(0, 0, ShadowProgram._width, ShadowProgram._height)
-            glBindFramebuffer(GL_FRAMEBUFFER, ShadowProgram._depth_buffer)
+            glViewport(0, 0, ShadowProgram.width, ShadowProgram.height)
+            glBindFramebuffer(GL_FRAMEBUFFER, ShadowProgram.depth_buffer)
             glClear(GL_DEPTH_BUFFER_BIT)
             glDrawArrays(GL_TRIANGLES, 0, len(vertices))
             glBindFramebuffer(GL_FRAMEBUFFER, 0)

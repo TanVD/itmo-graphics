@@ -3,43 +3,46 @@ from OpenGL.GL import *
 
 
 class ShadowProgram:
-    _width = 1024
-    _height = 1024
+    width = 1024
+    height = 1024
     _instance = None
 
-    _depth_buffer = 0
+    depth_buffer = 0
     _depth_texture = 0
 
     @staticmethod
-    def prepare():
-        return
-
-    @staticmethod
-    def after_create(vertices, normals):
+    def prepare(vertices, normals):
         glEnable(GL_DEPTH_TEST)
-
-        ShadowProgram._depth_buffer = glGenFramebuffers(1)
-        ShadowProgram._depth_texture = glGenTextures(1)
-
-        glBindTexture(GL_TEXTURE_2D, ShadowProgram._depth_texture)
-
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, ShadowProgram._width, ShadowProgram._height, 0,
-                     GL_DEPTH_COMPONENT, GL_FLOAT, [])
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT)
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT)
-
-        glBindFramebuffer(GL_FRAMEBUFFER, ShadowProgram._depth_buffer)
-        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, ShadowProgram._depth_texture, 0)
-        glDrawBuffer(GL_NONE)
-        glReadBuffer(GL_NONE)
         glBindFramebuffer(GL_FRAMEBUFFER, 0)
 
         glEnableClientState(GL_VERTEX_ARRAY)
         glVertexPointer(3, GL_FLOAT, 0, vertices)
         glEnableClientState(GL_NORMAL_ARRAY)
         glNormalPointer(GL_FLOAT, 0, normals)
+        return
+
+    @staticmethod
+    def after_create():
+        glEnable(GL_DEPTH_TEST)
+
+        ShadowProgram.depth_buffer = glGenFramebuffers(1)
+        glBindFramebuffer(GL_FRAMEBUFFER, ShadowProgram.depth_buffer)
+
+        ShadowProgram._depth_texture = glGenTextures(1)
+        glBindTexture(GL_TEXTURE_2D, ShadowProgram._depth_texture)
+
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT16, ShadowProgram.width, ShadowProgram.height, 0,
+                     GL_DEPTH_COMPONENT, GL_FLOAT, 0)
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT)
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT)
+
+        glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, ShadowProgram._depth_texture, 0)
+        glDrawBuffer(GL_NONE)
+        if glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE:
+            exit(1)
+
         return
 
     @staticmethod

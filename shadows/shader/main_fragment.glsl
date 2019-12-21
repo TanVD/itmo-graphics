@@ -2,6 +2,8 @@
 
 out vec4 frag_color;
 
+in vec2 frag_texture_coord;
+
 in vec3 frag_pos;
 in vec3 normal;
 in vec4 light_frag_pos;
@@ -16,16 +18,7 @@ vec3 color = vec3(0.2, 1, 0.5);
 uniform vec3 camera_position;
 uniform vec3 light_position;
 
-uniform sampler2D depth_map;
-
-float calculate_shadow() {
-    vec3 coords = light_frag_pos.xyz / light_frag_pos.w;
-    coords = coords * 0.5 + 0.5;
-    float closestDepth = texture(depth_map, coords.xy).r;
-    float currentDepth = coords.z;
-    float shadow = currentDepth > closestDepth + 0.001 ? 1.0 : 0.0;
-    return shadow;
-}
+uniform sampler2D shadow_map;
 
 vec3 calculate_ambient() {
     return ambient_coef * color;
@@ -50,14 +43,14 @@ vec3 calculate_specular() {
 
 void main()
 {
-    vec3 ambient_color = calculate_ambient();
-    vec3 diffuse_color = calculate_diffuse();
-    vec3 specular_color = calculate_specular();
+//    vec3 ambient_color = calculate_ambient();
+//    vec3 diffuse_color = calculate_diffuse();
+//    vec3 specular_color = calculate_specular();
 //    float shadow = calculate_shadow();
 
     vec3 coords = light_frag_pos.xyz / light_frag_pos.w ;
-    vec4 shadow = texture(depth_map, coords.xy);
+    vec4 shadow = texture(shadow_map, frag_texture_coord);
 
-    frag_color = vec4(shadow[2], 0, 0, 0);
+    frag_color = vec4(shadow[3], shadow[2], shadow[1], shadow[0]);
 //    frag_color = vec4(ambient_color + (diffuse_color + specular_color), 1);
 }

@@ -64,6 +64,7 @@ class Camera:
 
         Camera._yaw += diff_x
         Camera._pitch += diff_y
+        Camera._pitch = glm.clamp(Camera._pitch, -89, 89)
 
         Camera.update_gl()
 

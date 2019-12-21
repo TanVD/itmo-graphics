@@ -1,5 +1,7 @@
 #version 130
 
+in vec2 texture_coord;
+
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
@@ -13,8 +15,11 @@ out vec3 normal;
 out vec2 tex_coords;
 out vec4 light_frag_pos;
 
+out vec2 frag_texture_coord;
+
 //Based on examples from https://learnopengl.com/Lighting/
 void main() {
+    frag_texture_coord = texture_coord;
     frag_pos = vec3(model * gl_Vertex);
     light_frag_pos = light_projection * (light_view * vec4(frag_pos, 1.0f));
     normal = gl_Normal;
