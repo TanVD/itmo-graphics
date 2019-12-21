@@ -22,6 +22,7 @@ class Display:
             glClear(GL_DEPTH_BUFFER_BIT)
 
             glBindFramebuffer(GL_FRAMEBUFFER, ShadowMap.depth_buffer)
+
             glViewport(0, 0, ShadowMap.width, ShadowMap.height)
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
             glEnableClientState(GL_VERTEX_ARRAY)
@@ -30,6 +31,12 @@ class Display:
             glBindBuffer(GL_ARRAY_BUFFER, 0)
             glDrawArrays(GL_TRIANGLES, 0, len(vertices))
             glDisableClientState(GL_VERTEX_ARRAY)
+
+            # size = 10000
+            # arr = np.ones((size, 1), dtype=np.uint8)
+            # glBindBuffer(GL_ARRAY_BUFFER, ShadowMap.depth_buffer)
+            # size = glGetBufferParameteriv(GL_ARRAY_BUFFER, GL_BUFFER_SIZE)
+            # glGetBufferSubData(GL_ARRAY_BUFFER, size, size, arr)
 
             if glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE:
                 exit(1)
@@ -44,7 +51,7 @@ class Display:
             glViewport(0, 0, Config.width, Config.height)
             glActiveTexture(GL_TEXTURE0)
             glBindTexture(GL_TEXTURE_2D, ShadowMap.depth_texture)
-            # glUniform1i(glGetUniformLocation(Program.get(), "shadow_map"), 0)
+            # glUniform1i(glGetUniformLocation(Program.get(), "shadow_map"), 1)
 
             glEnableClientState(GL_VERTEX_ARRAY)
             glEnableClientState(GL_TEXTURE_COORD_ARRAY)
@@ -72,11 +79,15 @@ class Display:
             glActiveTexture(GL_TEXTURE0)
             glBindTexture(GL_TEXTURE_2D, ShadowMap.depth_texture)
             glBegin(GL_QUADS)
-            glColor3f(0,0,0)
-            glTexCoord2f(0, 0); glVertex3f(0.5, 0.5, 0)
-            glTexCoord2f(1, 0); glVertex3f(1, 0.5, 0)
-            glTexCoord2f(1, 1); glVertex3f(1, 1, 0)
-            glTexCoord2f(0, 1); glVertex3f(0.5, 1, 0)
+            glColor3f(0, 0, 0)
+            glTexCoord2f(0, 0)
+            glVertex3f(0.5, 0.5, 0)
+            glTexCoord2f(1, 0)
+            glVertex3f(1, 0.5, 0)
+            glTexCoord2f(1, 1)
+            glVertex3f(1, 1, 0)
+            glTexCoord2f(0, 1)
+            glVertex3f(0.5, 1, 0)
             glEnd()
 
             glutSwapBuffers()
