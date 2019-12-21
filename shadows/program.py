@@ -6,16 +6,6 @@ class Program:
     _instance = None
 
     @staticmethod
-    def prepare(vertices, normals):
-        glEnable(GL_DEPTH_TEST)
-        glBindFramebuffer(GL_FRAMEBUFFER, 0)
-
-        glEnableClientState(GL_VERTEX_ARRAY)
-        glVertexPointer(3, GL_FLOAT, 0, vertices)
-        glEnableClientState(GL_NORMAL_ARRAY)
-        glNormalPointer(GL_FLOAT, 0, normals)
-
-    @staticmethod
     def create():
         assert Program._instance is None
         Program._instance = glCreateProgram()

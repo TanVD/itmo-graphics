@@ -3,46 +3,7 @@ from OpenGL.GL import *
 
 
 class ShadowProgram:
-    width = 1024
-    height = 1024
     _instance = None
-
-    depth_buffer = 0
-    depth_texture = 0
-
-    @staticmethod
-    def prepare(vertices, normals):
-        glBindFramebuffer(GL_FRAMEBUFFER, 0)
-
-        glEnableClientState(GL_VERTEX_ARRAY)
-        glVertexPointer(3, GL_FLOAT, 0, vertices)
-        glEnableClientState(GL_NORMAL_ARRAY)
-        glNormalPointer(GL_FLOAT, 0, normals)
-        return
-
-    @staticmethod
-    def after_create():
-        ShadowProgram.depth_buffer = glGenFramebuffers(1)
-        glBindFramebuffer(GL_FRAMEBUFFER, ShadowProgram.depth_buffer)
-
-        ShadowProgram.depth_texture = glGenTextures(1)
-        glBindTexture(GL_TEXTURE_2D, ShadowProgram.depth_texture)
-
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT16, ShadowProgram.width, ShadowProgram.height, 0,
-                     GL_DEPTH_COMPONENT, GL_FLOAT, None)
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
-        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT)
-        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT)
-
-        glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, ShadowProgram.depth_texture, 0)
-        glDrawBuffer(GL_NONE)
-        glBindFramebuffer(GL_FRAMEBUFFER, 0)
-
-        if glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE:
-            exit(1)
-
-        return
 
     @staticmethod
     def create():

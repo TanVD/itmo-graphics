@@ -3,10 +3,17 @@ from camera import Camera
 from controls import Controls
 from display import *
 from lightning import Lightning
+from model import Model
 from objloader import ObjLoader
 from program import Program
 from shader.shader import Shader
+from shadow.shadow_map import ShadowMap
 from util import plane
+
+
+def cb_dbg_msg(source, msg_type, msg_id, severity, length, raw, user):
+    msg = raw[0:length]
+    print('debug', source, msg_type, msg_id, severity, msg)
 
 
 def main():
@@ -18,21 +25,23 @@ def main():
 
     glutInit(sys.argv)
     glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH)
-    glutInitWindowSize(Display.width, Display.height)
+    glutInitWindowSize(Config.width, Config.height)
     glutCreateWindow("HW3, Shadows, Tankov Vladislav")
 
+    # glEnable(GL_DEBUG_OUTPUT)
+    # glDebugMessageCallback(GLDEBUGPROC(cb_dbg_msg), None)
     glEnable(GL_TEXTURE_2D)
     glEnable(GL_DEPTH_TEST)
 
-    ShadowProgram.prepare(obj_file.prepared_vertices, obj_file.prepared_normals)
+    Model.create_buffers(obj_file.prepared_vertices, obj_file.prepared_tex_coords, obj_file.prepared_normals)
+    ShadowMap.create()
+
     ShadowProgram.create()
-    ShadowProgram.after_create()
     ShadowProgram.attach_shader(Shader.load("shader/shadow_vertex.glsl", GL_VERTEX_SHADER))
     ShadowProgram.attach_shader(Shader.load("shader/shadow_fragment.glsl", GL_FRAGMENT_SHADER))
     ShadowProgram.link()
     ShadowProgram.use()
 
-    Program.prepare(obj_file.prepared_vertices, obj_file.prepared_normals)
     Program.create()
     Program.attach_shader(Shader.load("shader/main_vertex.glsl", GL_VERTEX_SHADER))
     Program.attach_shader(Shader.load("shader/main_fragment.glsl", GL_FRAGMENT_SHADER))

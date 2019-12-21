@@ -2,16 +2,22 @@ import math
 
 import glm
 
-from display import Display
+from config import Config
 from program import Program
+from shadow.shadow_program import ShadowProgram
 
 
 class Camera:
+    projection = None
+    view = None
+    model = None
+
     _yaw = -90.0
     _pitch = 0.0
     _field_of_view = 50.0
 
-    _camera_up = glm.vec3(0.0, 1.0, 0.0)
+    camera_up = glm.vec3(0.0, 1.0, 0.0)
+    position = None
 
     _speed = 0.1
     _enable_rotation = False
@@ -20,17 +26,26 @@ class Camera:
 
     @staticmethod
     def update_gl():
-        camera_front = -glm.normalize(glm.vec3(
+        Camera.model = glm.scale(glm.mat4(), glm.vec3(Config.scale, Config.scale, Config.scale))
+
+        Camera.position = -glm.normalize(glm.vec3(
             math.cos(math.radians(Camera._yaw)) * math.cos(math.radians(Camera._pitch)),
             math.sin(math.radians(Camera._pitch)),
             math.sin(math.radians(Camera._yaw)) * math.cos(math.radians(Camera._pitch))
         ))
 
-        Program.forward_mat4("projection",
-                             glm.perspective(math.radians(Camera._field_of_view), Display.width / Display.height, 0.1, 100))
-        Program.forward_mat4("view",
-                             glm.lookAt(camera_front, glm.vec3(), Camera._camera_up))
-        Program.forward_vec3("camera_position", camera_front)
+        Camera.projection = glm.perspective(math.radians(Camera._field_of_view), Config.width / Config.height, 0.1, 100)
+        Camera.view = glm.lookAt(Camera.position, glm.vec3(), Camera.camera_up)
+
+        Program.forward_mat4("model", Camera.model)
+        Program.forward_mat4("projection", Camera.projection)
+        Program.forward_mat4("view", Camera.view)
+        Program.forward_vec3("camera_position", Camera.position)
+
+        ShadowProgram.forward_mat4("model", Camera.model)
+        ShadowProgram.forward_mat4("projection", Camera.projection)
+        ShadowProgram.forward_mat4("view", Camera.view)
+        ShadowProgram.forward_vec3("camera_position", Camera.position)
 
     @staticmethod
     def get_top_direction():
