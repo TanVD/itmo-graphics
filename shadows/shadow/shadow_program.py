@@ -8,11 +8,10 @@ class ShadowProgram:
     _instance = None
 
     depth_buffer = 0
-    _depth_texture = 0
+    depth_texture = 0
 
     @staticmethod
     def prepare(vertices, normals):
-        glEnable(GL_DEPTH_TEST)
         glBindFramebuffer(GL_FRAMEBUFFER, 0)
 
         glEnableClientState(GL_VERTEX_ARRAY)
@@ -23,23 +22,23 @@ class ShadowProgram:
 
     @staticmethod
     def after_create():
-        glEnable(GL_DEPTH_TEST)
-
         ShadowProgram.depth_buffer = glGenFramebuffers(1)
         glBindFramebuffer(GL_FRAMEBUFFER, ShadowProgram.depth_buffer)
 
-        ShadowProgram._depth_texture = glGenTextures(1)
-        glBindTexture(GL_TEXTURE_2D, ShadowProgram._depth_texture)
+        ShadowProgram.depth_texture = glGenTextures(1)
+        glBindTexture(GL_TEXTURE_2D, ShadowProgram.depth_texture)
 
         glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT16, ShadowProgram.width, ShadowProgram.height, 0,
-                     GL_DEPTH_COMPONENT, GL_FLOAT, 0)
+                     GL_DEPTH_COMPONENT, GL_FLOAT, None)
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT)
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT)
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT)
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT)
 
-        glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, ShadowProgram._depth_texture, 0)
+        glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, ShadowProgram.depth_texture, 0)
         glDrawBuffer(GL_NONE)
+        glBindFramebuffer(GL_FRAMEBUFFER, 0)
+
         if glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE:
             exit(1)
 
@@ -104,6 +103,3 @@ class ShadowProgram:
     def attach_shader(shader):
         glAttachShader(ShadowProgram.get(), shader)
 
-    @staticmethod
-    def depth_texture():
-        return ShadowProgram._depth_texture

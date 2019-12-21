@@ -21,6 +21,9 @@ def main():
     glutInitWindowSize(Display.width, Display.height)
     glutCreateWindow("HW3, Shadows, Tankov Vladislav")
 
+    glEnable(GL_TEXTURE_2D)
+    glEnable(GL_DEPTH_TEST)
+
     ShadowProgram.prepare(obj_file.prepared_vertices, obj_file.prepared_normals)
     ShadowProgram.create()
     ShadowProgram.after_create()
@@ -39,7 +42,7 @@ def main():
     Camera.update_gl()
     Lightning.update_gl()
 
-    glutDisplayFunc(Display.display(obj_file.prepared_vertices))
+    glutDisplayFunc(Display.display(obj_file.prepared_vertices, obj_file.prepared_normals))
     glutReshapeFunc(Display.reshape)
 
     glutIdleFunc(Display.idle)
