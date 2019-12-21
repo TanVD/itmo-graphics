@@ -2,14 +2,11 @@ from OpenGL.GL import *
 from OpenGL.GLU import *
 from OpenGL.GLUT import *
 
-from camera import Camera
 from dissolve import DissolveAnimation
+from lightning import Lightning
 
 
 class Display:
-    width = 800
-    height = 800
-
     @staticmethod
     def display(vertices):
         def display():
@@ -21,13 +18,12 @@ class Display:
 
     @staticmethod
     def reshape(width, height):
-        glMatrixMode(GL_PROJECTION)
-        glLoadIdentity()
         glViewport(0, 0, width, height)
         gluPerspective(100, width / height, 0.1, 50)
-        gluLookAt(*(10, 10, 10), *(0, 0, 0), *Camera.get_top_direction())
+        gluLookAt(*(10, 10, 10), *(0, 0, 0), *(0, 1, 0))
 
     @staticmethod
     def idle():
-        DissolveAnimation.animate_dissolve()
+        Lightning.update_gl()
+        DissolveAnimation.update_gl()
         glutPostRedisplay()

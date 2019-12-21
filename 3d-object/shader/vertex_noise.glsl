@@ -1,16 +1,20 @@
 #version 130
 
-varying vec3 normal;
-varying vec3 eye_position;
-
 in vec2 texture_coord;
+
+uniform mat4 model;
+uniform mat4 view;
+uniform mat4 projection;
+
+out vec3 frag_pos;
+out vec3 normal;
 out vec2 frag_texture_coord;
 
+//Based on examples from https://learnopengl.com/Lighting/
 void main() {
-    // based on lightning tutorial
-    eye_position = normalize(vec3(gl_ModelViewMatrix * gl_Vertex));
-    normal = normalize(gl_NormalMatrix * gl_Normal);
-
-    gl_Position = ftransform();
     frag_texture_coord = texture_coord;
+    normal = gl_Normal;
+
+    frag_pos = vec3(model * gl_Vertex);
+    gl_Position = projection * (view * (model * vec4(vec3(gl_Vertex), 1.0f)));
 }

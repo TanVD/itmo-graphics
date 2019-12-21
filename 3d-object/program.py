@@ -1,3 +1,4 @@
+import glm
 from OpenGL.GL import *
 
 
@@ -5,11 +6,16 @@ class Program:
     _instance = None
 
     @staticmethod
-    def prepare(vertices):
+    def prepare(vertices, normals):
         glEnable(GL_DEPTH_TEST)
-        glEnableClientState(GL_TEXTURE_COORD_ARRAY)
+        glBindFramebuffer(GL_FRAMEBUFFER, 0)
+
+        glClearColor(20 / 255, 20 / 255, 20 / 255, 1)
+
         glEnableClientState(GL_VERTEX_ARRAY)
         glVertexPointer(3, GL_FLOAT, 0, vertices)
+        glEnableClientState(GL_NORMAL_ARRAY)
+        glNormalPointer(GL_FLOAT, 0, normals)
 
     @staticmethod
     def create():
@@ -44,6 +50,14 @@ class Program:
     @staticmethod
     def forward_float(name, value):
         glProgramUniform1f(Program.get(), Program._forward_location(name), value)
+
+    @staticmethod
+    def forward_vec3(name, value):
+        glProgramUniform3fv(Program.get(), Program._forward_location(name), 1, glm.value_ptr(value))
+
+    @staticmethod
+    def forward_mat4(name, value):
+        glProgramUniformMatrix4fv(Program.get(), Program._forward_location(name), 1, GL_FALSE, glm.value_ptr(value))
 
     @staticmethod
     def forward_2d_texture(index, name, coords):
