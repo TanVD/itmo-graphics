@@ -20,20 +20,29 @@ uniform vec3 light_position;
 
 uniform sampler2D shadow_map;
 
+vec3 light_direction = normalize(light_position);
+
+float calculate_shadows() {
+    vec3 coords = (light_frag_pos.xyz / light_frag_pos.w) * 0.5 + 0.5;
+    float depth_by_map = texture(shadow_map, coords.xy).r;
+    float depth_by_world = coords.z;
+    float shadow = 0.0;
+    if (depth_by_world - 0.001 > depth_by_map) {
+        shadow = 1.0;
+    }
+    return 1.0 - shadow;
+}
+
 vec3 calculate_ambient() {
     return ambient_coef * color;
 }
 
 vec3 calculate_diffuse() {
-    vec3 light_direction = normalize(light_position);
-
     float diff = max(dot(normalize(normal), light_direction), 0.0);
     return diffuse_coef * diff * color;
 }
 
 vec3 calculate_specular() {
-    vec3 light_direction = normalize(light_position);
-
     vec3 view_direction = normalize(camera_position - frag_pos);
     vec3 reflect_direction = reflect(-light_direction, normalize(normal));
     float spec = pow(max(dot(view_direction, reflect_direction), 0.0), 3);
@@ -41,16 +50,11 @@ vec3 calculate_specular() {
     return specular;
 }
 
-void main()
-{
-//    vec3 ambient_color = calculate_ambient();
-//    vec3 diffuse_color = calculate_diffuse();
-//    vec3 specular_color = calculate_specular();
-//    float shadow = calculate_shadow();
+void main() {
+    vec3 ambient_color = calculate_ambient();
+    vec3 diffuse_color = calculate_diffuse();
+    vec3 specular_color = calculate_specular();
+    float shadow = calculate_shadows();
 
-    vec3 coords = light_frag_pos.xyz / light_frag_pos.w ;
-    vec4 shadow = texture(shadow_map, frag_texture_coord);
-
-        frag_color = vec4(shadow[3], shadow[2], shadow[1], shadow[0]);
-//    frag_color = vec4(ambient_color + (diffuse_color + specular_color), 1);
+    frag_color = vec4(ambient_color +  shadow * (diffuse_color + specular_color), 1);
 }

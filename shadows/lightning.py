@@ -3,7 +3,6 @@ import time
 
 import glm
 
-from config import Config
 from program import Program
 from shadow.shadow_program import ShadowProgram
 
@@ -23,7 +22,7 @@ class Lightning:
     @staticmethod
     def update_gl():
         light_position = glm.vec3(*Lightning._light_pos())
-        light_projection = glm.ortho(-1.0, 1.0, -1.0, 1.0, 0.5, 6.0)
+        light_projection = glm.ortho(-1.0, 1.0, -1.0, 1.0, 0.5, 5.0)
         light_view = glm.lookAt(glm.vec3(*Lightning._light_pos()), glm.vec3(0.0, 0.0, 0.0), glm.vec3(0, 1, 0))
 
         Program.use()

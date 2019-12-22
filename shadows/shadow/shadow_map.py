@@ -2,8 +2,8 @@ from OpenGL.GL import *
 
 
 class ShadowMap:
-    width = 1024
-    height = 1024
+    width = 2048
+    height = 2048
     _instance = None
 
     depth_buffer = 0

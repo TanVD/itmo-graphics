@@ -3,7 +3,6 @@ from OpenGL.GL import *
 from OpenGL.GLU import *
 from OpenGL.GLUT import *
 
-from camera import Camera
 from config import Config
 from lightning import Lightning
 from model import Model
@@ -13,7 +12,20 @@ from shadow.shadow_program import ShadowProgram
 
 
 class Display:
-    _show_shadow_map = True
+    _is_debug = False
+    _shadow_map_size = ShadowMap.width * ShadowMap.height  # Здесь надо брать размер текстуры по хорошему
+    _show_shadow_map = False
+
+    @staticmethod
+    def _check_map():
+        if not Display._is_debug:
+            return
+        glActiveTexture(GL_TEXTURE0)
+        glBindTexture(GL_TEXTURE_2D, ShadowMap.depth_texture)
+        arr = np.zeros((Display._shadow_map_size, 1), dtype=np.float32)
+        glGetTexImage(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, GL_FLOAT, arr)
+        non_one = [i for i in arr if i < 0.99]
+        debug = 1
 
     @staticmethod
     def display(vertices, normals):
@@ -35,14 +47,10 @@ class Display:
             glDrawArrays(GL_TRIANGLES, 0, len(vertices))
             glDisableClientState(GL_VERTEX_ARRAY)
 
-            # size = 10000
-            # arr = np.ones((size, 1), dtype=np.uint8)
-            # glBindBuffer(GL_ARRAY_BUFFER, ShadowMap.depth_buffer)
-            # size = glGetBufferParameteriv(GL_ARRAY_BUFFER, GL_BUFFER_SIZE)
-            # glGetBufferSubData(GL_ARRAY_BUFFER, size, size, arr)
-
             if glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE:
                 exit(1)
+
+            Display._check_map()
 
             ShadowProgram.disable()
 
@@ -59,7 +67,6 @@ class Display:
             glViewport(0, 0, Config.width, Config.height)
             glActiveTexture(GL_TEXTURE0)
             glBindTexture(GL_TEXTURE_2D, ShadowMap.depth_texture)
-            # glUniform1i(glGetUniformLocation(Program.get(), "shadow_map"), 1)
 
             glEnableClientState(GL_VERTEX_ARRAY)
             glEnableClientState(GL_TEXTURE_COORD_ARRAY)
@@ -77,26 +84,6 @@ class Display:
             glDisableClientState(GL_NORMAL_ARRAY)
 
             Program.disable()
-
-            glMatrixMode(GL_PROJECTION)
-            glLoadMatrixf(np.array(Camera.projection, dtype=np.float32))
-
-            glMatrixMode(GL_MODELVIEW)
-            glLoadMatrixf(np.array(Camera.view * Camera.model, dtype=np.float32))
-
-            glActiveTexture(GL_TEXTURE0)
-            glBindTexture(GL_TEXTURE_2D, ShadowMap.depth_texture)
-            glBegin(GL_QUADS)
-            glColor3f(0, 0, 0)
-            glTexCoord2f(0, 0)
-            glVertex3f(0.5, 0.5, 0)
-            glTexCoord2f(1, 0)
-            glVertex3f(1, 0.5, 0)
-            glTexCoord2f(1, 1)
-            glVertex3f(1, 1, 0)
-            glTexCoord2f(0, 1)
-            glVertex3f(0.5, 1, 0)
-            glEnd()
 
             glutSwapBuffers()
             glutPostRedisplay()
