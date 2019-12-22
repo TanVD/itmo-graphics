@@ -13,6 +13,8 @@ from shadow.shadow_program import ShadowProgram
 
 
 class Display:
+    _show_shadow_map = True
+
     @staticmethod
     def display(vertices, normals):
         def display():
@@ -21,7 +23,8 @@ class Display:
             ShadowProgram.use()
             glClear(GL_DEPTH_BUFFER_BIT)
 
-            glBindFramebuffer(GL_FRAMEBUFFER, ShadowMap.depth_buffer)
+            if not Display._show_shadow_map:
+                glBindFramebuffer(GL_FRAMEBUFFER, ShadowMap.depth_buffer)
 
             glViewport(0, 0, ShadowMap.width, ShadowMap.height)
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
@@ -42,6 +45,11 @@ class Display:
                 exit(1)
 
             ShadowProgram.disable()
+
+            if Display._show_shadow_map:
+                glutSwapBuffers()
+                glutPostRedisplay()
+                return
 
             Program.use()
             glBindFramebuffer(GL_FRAMEBUFFER, 0)

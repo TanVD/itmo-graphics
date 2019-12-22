@@ -51,6 +51,6 @@ void main()
     vec3 coords = light_frag_pos.xyz / light_frag_pos.w ;
     vec4 shadow = texture(shadow_map, frag_texture_coord);
 
-    frag_color = vec4(shadow[3], shadow[2], shadow[1], shadow[0]);
+        frag_color = vec4(shadow[3], shadow[2], shadow[1], shadow[0]);
 //    frag_color = vec4(ambient_color + (diffuse_color + specular_color), 1);
 }
