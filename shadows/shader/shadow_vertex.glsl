@@ -1,4 +1,6 @@
-#version 130
+#version 330 core
+
+in vec4 gl_Vertex;
 
 uniform mat4 model;
 uniform mat4 light_view;

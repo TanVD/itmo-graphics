@@ -1,5 +1,7 @@
-#version 130
+#version 330 core
 
+in vec4 gl_Vertex;
+in vec3 gl_Normal;
 in vec2 texture_coord;
 
 uniform mat4 model;
