@@ -1,4 +1,5 @@
 import glm
+import numpy as np
 from OpenGL.GL import *
 
 
@@ -42,12 +43,13 @@ class ShadowProgram:
 
     @staticmethod
     def forward_vec3(name, value):
-        glProgramUniform3fv(ShadowProgram.get(), ShadowProgram._forward_location(name), 1, glm.value_ptr(value))
+        arr = np.array(value, dtype=np.float32)
+        glProgramUniform3fv(ShadowProgram.get(), ShadowProgram._forward_location(name), 1, arr)
 
     @staticmethod
     def forward_mat4(name, value):
-        glProgramUniformMatrix4fv(ShadowProgram.get(), ShadowProgram._forward_location(name), 1, GL_FALSE,
-                                  glm.value_ptr(value))
+        arr = np.array(value, dtype=np.float32)
+        glProgramUniformMatrix4fv(ShadowProgram.get(), ShadowProgram._forward_location(name), 1, GL_FALSE, arr)
 
     @staticmethod
     def forward_2d_texture(index, name, coords):
